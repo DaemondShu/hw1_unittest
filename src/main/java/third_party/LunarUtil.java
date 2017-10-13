@@ -3,10 +3,10 @@ package third_party;
 /**
  * create by __yore
  * 公历转农历工具类(1900~2100)
- *
  */
 
-public class LunarUtil {
+public class LunarUtil
+{
     // 农历信息表上下限
     public static final int yearBase = 1900;
     public static final int yearUpper = 2100;
@@ -73,7 +73,8 @@ public class LunarUtil {
      * @param total 这一天距1900-1-1的天数
      * @return 农历信息表字符串数组数组
      */
-    public static String[] getLunarDateInfo(int year, int month, int day, int total) {
+    public String[] getLunarDateInfo(int year, int month, int day, int total)
+    {
         // 越界直接返回
         if (year > yearUpper || year < yearBase) return new String[]{"", "", "", ""};
 
@@ -87,22 +88,27 @@ public class LunarUtil {
         String strDay;  // 农历日
 
         // 1900年1月特殊处理
-        if (total < 30) {
+        if (total < 30)
+        {
             ganIndex = 5;
             zhiIndex = 11;
             monthIndex = 12;
             sizeIndex = 1;
-        } else {
+        } else
+        {
             // 从1900-1-31开始计算
             total -= 30;
             int yearIndex = 0;
-            while (true) {
+            while (true)
+            {
                 int daysInYear = getDayNum(lunarInfo[yearIndex]);
-                if (total >= daysInYear) {
+                if (total >= daysInYear)
+                {
                     total -= daysInYear;
                     ganIndex = (ganIndex + 1) % 10;
                     zhiIndex = (zhiIndex + 1) % 12;
-                } else {
+                } else
+                {
                     break;
                 }
                 yearIndex++;
@@ -110,30 +116,37 @@ public class LunarUtil {
             int monthTemp = 1;
             int leapMonth = getLeapMonth(lunarInfo[yearIndex]);
             int[] monthSize = getMonthSize(lunarInfo[yearIndex], leapMonth);
-            while (true) {
+            while (true)
+            {
                 int monthDays = (monthSize[monthTemp - 1] == 0) ? 29 : 30;
-                if (total >= monthDays) {
+                if (total >= monthDays)
+                {
                     total -= monthDays;
                     monthTemp = monthTemp % 12 + 1;
-                } else {
+                } else
+                {
                     sizeIndex = monthSize[monthTemp - 1];
                     break;
                 }
             }
-            monthIndex = (leapMonth==0 || monthTemp<=leapMonth) ? monthTemp : monthTemp-1;
-            if (monthIndex==leapMonth && monthTemp==leapMonth+1) isLeapMonth=true;
+            monthIndex = (leapMonth == 0 || monthTemp <= leapMonth) ? monthTemp : monthTemp - 1;
+            if (monthIndex == leapMonth && monthTemp == leapMonth + 1) isLeapMonth = true;
         }
 
         // 处理农历日
         int remainder = total % 10; // 余数
         int quotient = total / 10;  // 商
-        if (quotient == 0 || quotient==3) {
+        if (quotient == 0 || quotient == 3)
+        {
             strDay = dayPre[0] + dayLater[remainder];
-        } else {
-            if (remainder == 9) {
-                strDay = dayPre[quotient+1] + dayLater[remainder];
-            } else {
-                strDay = dayPre[quotient*quotient] + dayLater[remainder];
+        } else
+        {
+            if (remainder == 9)
+            {
+                strDay = dayPre[quotient + 1] + dayLater[remainder];
+            } else
+            {
+                strDay = dayPre[quotient * quotient] + dayLater[remainder];
             }
         }
         // 构造结果数组
@@ -149,10 +162,12 @@ public class LunarUtil {
 
     /**
      * 获取该农历年的总天数
-     * @param info  农历年的16进制记录
-     * @return  总天数 int
+     *
+     * @param info 农历年的16进制记录
+     * @return 总天数 int
      */
-    private static int getDayNum(long info) {
+    private static int getDayNum(long info)
+    {
         int sum = 0;
         int leapMonth = getLeapMonth(info);
         int[] monthSize = getMonthSize(info, leapMonth);
@@ -162,33 +177,42 @@ public class LunarUtil {
 
     /**
      * 获取该农历年的闰月是哪月（1-12）
-     * @param info  该农历年的16进制记录
-     * @return  返回该年的闰月
+     *
+     * @param info 该农历年的16进制记录
+     * @return 返回该年的闰月
      */
-    private static int getLeapMonth(long info) {
+    private static int getLeapMonth(long info)
+    {
         return (int) info % 16;
     }
 
     /**
      * 获取该农历年的的每月月份大小 1：大，0：小
+     *
      * @param info      该农历年的16进制记录
      * @param leapMonth 该农历年的闰月
-     * @return  int[] {1, 0, 1, 1, 0.....} 有闰月13个数据，否则12个
+     * @return int[] {1, 0, 1, 1, 0.....} 有闰月13个数据，否则12个
      */
-    private static int[] getMonthSize(long info, int leapMonth) {
+    private static int[] getMonthSize(long info, int leapMonth)
+    {
         int[] monthSize;
         int flag = (int) info >> 16;
-        if (leapMonth == 0) {
+        if (leapMonth == 0)
+        {
             monthSize = new int[12];
-        } else {
+        } else
+        {
             monthSize = new int[13];
             monthSize[leapMonth] = flag;
         }
         info >>= 4;
-        for (int i = 0; i < 12; i++, info >>= 1) {
-            if (leapMonth > 0 && (12 - i) > leapMonth) {
+        for (int i = 0; i < 12; i++, info >>= 1)
+        {
+            if (leapMonth > 0 && (12 - i) > leapMonth)
+            {
                 monthSize[12 - i] = (int) info % 2;
-            } else {
+            } else
+            {
                 monthSize[12 - i - 1] = (int) info % 2;
             }
         }

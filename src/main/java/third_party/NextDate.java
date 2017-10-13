@@ -1,5 +1,7 @@
 package third_party;
 
+import org.junit.experimental.theories.suppliers.TestedOn;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,8 @@ import java.util.ArrayList;
  * 不要实例化，修改入口函数以测试
  * 请使用判定标志常量
  */
-public class NextDate {
+public class NextDate
+{
     // 返回结果判定标志
     public static final String NO_LUNAR_INFO = "2";     // 农历越界
     public static final String SUCCESS = "1";           // 计算成功
@@ -31,6 +34,15 @@ public class NextDate {
     private static final String errNoSuchDateMsg = "输入的日期不存在";
     private static final String unknownErrorMsg = "未知的错误";
 
+
+    private LunarUtil lunarUtil = new LunarUtil();
+
+    public void setLunarUtil(LunarUtil lunarUtil)
+    {
+        this.lunarUtil = lunarUtil;
+    }
+
+
     /**
      * 获取输入日期的后一天的公历和农历信息入口方法
      *
@@ -40,9 +52,11 @@ public class NextDate {
      * @param n        向后天数
      * @return 后一天的日期信息或者错误信息列表
      */
-    public static ArrayList<String> getNextDateInfo(int yearNow, int monthNow, int dayNow, int n) {
+    public ArrayList<String> getNextDateInfo(int yearNow, int monthNow, int dayNow, int n)
+    {
         ArrayList<String> result = new ArrayList<>();
-        switch (validDate(yearNow, monthNow, dayNow)) {
+        switch (validDate(yearNow, monthNow, dayNow))
+        {
             case errDateOutOfRange:
                 result.add(FAIL);
                 result.add(errDateOutOfRangeMsg);
@@ -58,7 +72,8 @@ public class NextDate {
                 if (n <= 0) info = _getBackNDateInfo(yearNow, monthNow, dayNow, n);
                 else if (n == 1) info = _getNextDateInfo(yearNow, monthNow, dayNow);
                 else info = _getNextNDateInfo(yearNow, monthNow, dayNow, n);
-                for (String s : info) {
+                for (String s : info)
+                {
                     result.add(s);
                 }
                 break;
@@ -75,7 +90,8 @@ public class NextDate {
      *
      * @return 后一天信息字符串数组
      */
-    private static String[] _getNextDateInfo(int year, int month, int day) {
+    private String[] _getNextDateInfo(int year, int month, int day)
+    {
         String[] info;
         int isLeapYear = isLeapYear(year) ? 1 : 0;
         int yearNext = year;
@@ -85,26 +101,32 @@ public class NextDate {
         int total = 0;          // 与1900-1-1的时间差,用于计算农历
 
         // 计算下一天的公历日期
-        if (dayNext > calendarMonth[isLeapYear][monthNext - 1]) {
+        if (dayNext > calendarMonth[isLeapYear][monthNext - 1])
+        {
             dayNext = 1;
             monthNext++;
-            if (monthNext > 12) {
+            if (monthNext > 12)
+            {
                 monthNext = 1;
                 yearNext++;
             }
         }
 
         // 计算下一天星期
-        for (int y = yearBase; y < yearNext; y++) {
-            if (isLeapYear(y)) {
+        for (int y = yearBase; y < yearNext; y++)
+        {
+            if (isLeapYear(y))
+            {
                 week = (week + addInLeapYear) % 7;
                 total += 366;
-            } else {
+            } else
+            {
                 week = (week + addInNormalYear) % 7;
                 total += 365;
             }
         }
-        for (int m = 1; m < monthNext; m++) {
+        for (int m = 1; m < monthNext; m++)
+        {
             week = (week + calendarMonth[isLeapYear][m - 1]) % 7;
             total += calendarMonth[isLeapYear][m - 1];
         }
@@ -112,7 +134,7 @@ public class NextDate {
         total += dayNext - 1;
 
         // 根据公历日期获取农历日期
-        String[] lunarDateInfo = LunarUtil.getLunarDateInfo(yearNext, monthNext, dayNext, total);
+        String[] lunarDateInfo = lunarUtil.getLunarDateInfo(yearNext, monthNext, dayNext, total);
 
         // 更新后一天信息字符串数组
         info = new String[]{
@@ -138,14 +160,17 @@ public class NextDate {
      * @param n     后n天
      * @return 后n天的字符串数组信息
      */
-    private static String[] _getNextNDateInfo(int year, int month, int day, int n) {
+    private String[] _getNextNDateInfo(int year, int month, int day, int n)
+    {
         n--;
         day += n;
         // 计算公历
-        while (day > calendarMonth[isLeapYear(year) ? 1 : 0][month - 1]) {
+        while (day > calendarMonth[isLeapYear(year) ? 1 : 0][month - 1])
+        {
             day -= calendarMonth[isLeapYear(year) ? 1 : 0][month - 1];
             month++;
-            if (month == 13) {
+            if (month == 13)
+            {
                 year++;
                 month = 1;
             }
@@ -162,20 +187,25 @@ public class NextDate {
      * @param n     相差天数-负数
      * @return 信息的字符串数组
      */
-    private static String[] _getBackNDateInfo(int year, int month, int day, int n) {
+    private String[] _getBackNDateInfo(int year, int month, int day, int n)
+    {
         day += n;
         day--;
-        while (day < 0) {
+        while (day < 0)
+        {
             day += calendarMonth[isLeapYear(year) ? 1 : 0][(month + 10) % 12];
             month--;
-            if (month == 0) {
+            if (month == 0)
+            {
                 year--;
                 month = 12;
             }
         }
-        if (day == 0) {
+        if (day == 0)
+        {
             month--;
-            if (month == 0) {
+            if (month == 0)
+            {
                 year--;
                 month = 12;
             }
@@ -189,7 +219,8 @@ public class NextDate {
      *
      * @return 是否是闰年的结果
      */
-    private static Boolean isLeapYear(int year) {
+    private static Boolean isLeapYear(int year)
+    {
         return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
     }
 
@@ -198,15 +229,20 @@ public class NextDate {
      *
      * @return 错误码
      */
-    private static int validDate(int year, int month, int day) {
-        if (year < 1900 || year > 2100) {
+    private static int validDate(int year, int month, int day)
+    {
+        if (year < 1900 || year > 2100)
+        {
             return errDateOutOfRange;
-        } else if (month > 12 || month < 1) {
+        } else if (month > 12 || month < 1)
+        {
             System.out.println(year + "-" + month + "-" + day);
             return errNoSuchDate;
-        } else {
+        } else
+        {
             int isLeapYear = isLeapYear(year) ? 1 : 0;
-            if (day < 1 || day > calendarMonth[isLeapYear][month - 1]) {
+            if (day < 1 || day > calendarMonth[isLeapYear][month - 1])
+            {
                 System.out.println(year + "-" + month + "-" + day);
                 return errNoSuchDate;
             }
