@@ -169,7 +169,7 @@ public class LunarUtil
      * @param info 农历年的16进制记录
      * @return 总天数 int
      */
-    private static int getDayNum(long info)
+    public static int getDayNum(long info)
     {
         int sum = 0;
         int leapMonth = getLeapMonth(info);

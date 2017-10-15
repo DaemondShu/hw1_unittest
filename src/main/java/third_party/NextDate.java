@@ -3,15 +3,11 @@
  */
 package third_party;
 
-import org.junit.experimental.theories.suppliers.TestedOn;
+//import org.junit.experimental.theories.suppliers.TestedOn;
 
 import java.util.ArrayList;
 
-/**
- * NextDate逻辑类
- * 不要实例化，修改入口函数以测试
- * 请使用判定标志常量
- */
+
 public class NextDate
 {
     // 返回结果判定标志
@@ -232,7 +228,7 @@ public class NextDate
      *
      * @return 错误码
      */
-    private static int validDate(int year, int month, int day)
+    public static int validDate(int year, int month, int day)
     {
         if (year < 1900 || year > 2100)
         {
