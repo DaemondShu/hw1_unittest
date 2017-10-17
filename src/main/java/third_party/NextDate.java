@@ -54,7 +54,7 @@ public class NextDate
     public ArrayList<String> getNextDateInfo(int yearNow, int monthNow, int dayNow, int n)
     {
         ArrayList<String> result = new ArrayList<>();
-        switch (validDate(yearNow, monthNow, dayNow))
+        switch (_validDate(yearNow, monthNow, dayNow))
         {
             case errDateOutOfRange:
                 result.add(FAIL);
@@ -82,6 +82,18 @@ public class NextDate
                 break;
         }
         return result;
+    }
+
+    /**
+     * 判断日期是否有效
+     * @param year
+     * @param month
+     * @param day
+     * @return
+     */
+    public int validDate(int year, int month, int day)
+    {
+        return _validDate(year, month, day);
     }
 
     /**
@@ -228,7 +240,7 @@ public class NextDate
      *
      * @return 错误码
      */
-    public static int validDate(int year, int month, int day)
+    private static int _validDate(int year, int month, int day)
     {
         if (year < 1900 || year > 2100)
         {

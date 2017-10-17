@@ -104,7 +104,7 @@ public class LunarUtil
             int yearIndex = 0;
             while (true)
             {
-                int daysInYear = getDayNum(lunarInfo[yearIndex]);
+                int daysInYear = _getDayNum(lunarInfo[yearIndex]);
                 if (total >= daysInYear)
                 {
                     total -= daysInYear;
@@ -171,13 +171,22 @@ public class LunarUtil
      */
     public static int getDayNum(long info)
     {
+        return _getDayNum(info);
+    }
+
+    /**
+     * 计算农历年的总天数的私有函数
+     * @param info
+     * @return
+     */
+    private static int _getDayNum(long info)
+    {
         int sum = 0;
         int leapMonth = getLeapMonth(info);
         int[] monthSize = getMonthSize(info, leapMonth);
         for (int s : monthSize) sum += (s == 0) ? 29 : 30;
         return sum;
     }
-
     /**
      * 获取该农历年的闰月是哪月（1-12）
      *
