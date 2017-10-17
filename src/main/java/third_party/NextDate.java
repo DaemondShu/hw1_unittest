@@ -91,7 +91,7 @@ public class NextDate
      * @param day
      * @return
      */
-    public int validDate(int year, int month, int day)
+    public static int validDate(int year, int month, int day)
     {
         return _validDate(year, month, day);
     }
