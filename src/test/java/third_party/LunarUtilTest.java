@@ -79,7 +79,7 @@ public class LunarUtilTest {
      */
     private void VerifyGetDayNumTest(String Item) throws Exception
     {
-        JsonNode temp = testData_GetDayNumTest.get(Item);
+        JsonNode temp = testData_GetDayNumTest.get(Item).get("");
         assertEquals(temp.get("out").asInt(), LunarUtil.getDayNum(temp.get("in").asInt()));
     }
 
