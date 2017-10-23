@@ -293,10 +293,32 @@ public class NextDateTest
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2100).add(12).add(31).add(1));
 
-        return testdata;
+        //计算前几天：2001年1月6日，计算10天前,_getBackNDateInfo中day<0,month=0
+        testdata=ConstructTestData(testdata,"004",
+                newArrayNode().add(NextDate.SUCCESS).add(2000).add(12).add(27)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2001).add(1).add(6).add(-10));
 
+        //2001年1月5日，计算4天前，_getBackNDateInfo中day=0,month=0
+        testdata=ConstructTestData(testdata,"005",
+                newArrayNode().add(NextDate.SUCCESS).add(2001).add(1).add(1)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2001).add(1).add(5).add(-4));
+
+        //计算后一天：2007年12月31日，n=1
+        testdata=ConstructTestData(testdata,"006",
+                newArrayNode().add(NextDate.SUCCESS).add(2008).add(1).add(1)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2007).add(12).add(31).add(1));
+
+        //计算后几天：2007年12月1日，n=32
+        testdata=ConstructTestData(testdata,"007",
+                newArrayNode().add(NextDate.SUCCESS).add(2008).add(1).add(2)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2007).add(12).add(1).add(32));
+        return testdata;
     }
-    private void VerifyGetNextDateIinfo(String index) throws Exception
+    private void VerifyGetNextDateInfo(String index) throws Exception
     {
         NextDate nextDate=new NextDate();
         //        造木桩
@@ -312,11 +334,19 @@ public class NextDateTest
                 nextDate.getNextDateInfo(temp.get("in").get(0).asInt(),temp.get("in").get(1).asInt(),temp.get("in").get(2).asInt(),temp.get("in").get(3).asInt()));
 
     }
-    @Test public void GetNextDateInfoTest001() throws Exception { VerifyGetNextDateIinfo("001"); }
+    @Test public void GetNextDateInfoTest001() throws Exception { VerifyGetNextDateInfo("001"); }
 
-    @Test public void GetNextDateInfoTest002() throws Exception { VerifyGetNextDateIinfo("002"); }
+    @Test public void GetNextDateInfoTest002() throws Exception { VerifyGetNextDateInfo("002"); }
 
-    @Test public void GetNextDateInfoTest003() throws Exception { VerifyGetNextDateIinfo("003"); }
+    @Test public void GetNextDateInfoTest003() throws Exception { VerifyGetNextDateInfo("003"); }
+
+    @Test public void GetNextDateInfoTest004() throws Exception { VerifyGetNextDateInfo("004"); }
+
+    @Test public void GetNextDateInfoTest005() throws Exception { VerifyGetNextDateInfo("005"); }
+
+    @Test public void GetNextDateInfoTest006() throws Exception { VerifyGetNextDateInfo("006"); }
+
+    @Test public void GetNextDateInfoTest007() throws Exception { VerifyGetNextDateInfo("007"); }
 
 
 }
