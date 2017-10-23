@@ -43,7 +43,7 @@ public class NextDateTest
 
     private static JsonNode testData_validDateTest;
     private static JsonNode testData_getNextDataInfoTest;
-    private static String[] lunarInfoMock=new String[]{"己丑年", "二月小小小小", "初二", "牛"};
+    private static String[] lunarInfoMock=new String[]{"己丑年", "二月小", "初二", "牛"};
     @BeforeClass
     public static void InitTestData()
     {
@@ -289,7 +289,7 @@ public class NextDateTest
 
         //2100年12月31日，nextdate超出范围，返回NO_LUNAR_INFO以及桩公历信息
         testdata=ConstructTestData(testdata,"003",
-                newArrayNode().add(NextDate.NO_LUNAR_INFO).add(2101).add(1).add(1).add(6)
+                newArrayNode().add(NextDate.NO_LUNAR_INFO).add(2101).add(1).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2100).add(12).add(31).add(1));
 
@@ -317,5 +317,6 @@ public class NextDateTest
     @Test public void GetNextDateInfoTest002() throws Exception { VerifyGetNextDateIinfo("002"); }
 
     @Test public void GetNextDateInfoTest003() throws Exception { VerifyGetNextDateIinfo("003"); }
+
 
 }

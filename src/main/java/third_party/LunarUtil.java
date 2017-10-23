@@ -84,7 +84,6 @@ public class LunarUtil
      * @param year  公历年
      * @param month 公历月
      * @param day   公历日
-     * @param total 这一天距1900-1-1的天数
      * @return 农历信息表字符串数组数组
      */
     public String[] getLunarDateInfo(int year, int month, int day)
