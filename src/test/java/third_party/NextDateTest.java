@@ -1,5 +1,6 @@
 package third_party;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -11,13 +12,12 @@ import org.mockito.ArgumentMatchers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class NextDateTest
 {
@@ -42,11 +42,16 @@ public class NextDateTest
 //    }
 
     private static JsonNode testData_validDateTest;
+    private static JsonNode testData_getNextDataInfoTest;
+    private static String[] lunarInfoMock=new String[]{"己丑年", "二月小小小小", "初二", "牛"};
     @BeforeClass
     public static void InitTestData()
     {
         testData_validDateTest = IniTestData_validDataTest();
+        testData_getNextDataInfoTest=IniTestData_getNextDateInfoTest();
+
     }
+
     private static ObjectNode newObjectNode()
     {
         return new ObjectMapper().createObjectNode();
@@ -55,6 +60,7 @@ public class NextDateTest
     {
         return new ObjectMapper().createArrayNode();
     }
+
     private static JsonNode IniTestData_validDataTest()
     {
 
@@ -129,7 +135,6 @@ public class NextDateTest
     @Test public void validDateTest009() throws Exception { VerifyValidDateTest("009"); }
 
     @Test public void validDateTest010() throws Exception { VerifyValidDateTest("010"); }
-
 //
 //    /**
 //     * 年份不符合要求，大于可用范围
@@ -257,5 +262,60 @@ public class NextDateTest
 //    }
 //
 
+    private static ObjectNode ConstructTestData(ObjectNode data,String index,ArrayNode out,ArrayNode in)
+    {
+        ObjectNode temp=newObjectNode();
+        temp.set("out",out);
+        temp.set("in",in);
+        data.set(index,temp);
+        return data;
+    }
+    private static JsonNode IniTestData_getNextDateInfoTest()
+    {
+        ObjectNode testdata=newObjectNode();
+//        testdata.set("out",newArrayNode().add(NextDate.FAIL).add("输入的日期超出应用可用范围"));
+//        testdata.set("in",newArrayNode().add(1800).add(1).add(1).add(1));
+//        testdata.set("001",testdata);
+
+        //1800年1月1日，日期超出范围，期望返回fail以及错误信息：输入的日期超出应用可用范围
+        testdata=ConstructTestData(testdata,"001",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期超出应用可用范围"),
+                newArrayNode().add(1800).add(1).add(1).add(1));
+
+        //2000年8月40日，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"002",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
+                newArrayNode().add(2000).add(8).add(40).add(1));
+
+        //2100年12月31日，nextdate超出范围，返回NO_LUNAR_INFO以及桩公历信息
+        testdata=ConstructTestData(testdata,"003",
+                newArrayNode().add(NextDate.NO_LUNAR_INFO).add(2101).add(1).add(1).add(6)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2100).add(12).add(31).add(1));
+
+        return testdata;
+
+    }
+    private void VerifyGetNextDateIinfo(String index) throws Exception
+    {
+        NextDate nextDate=new NextDate();
+        //        造木桩
+        LunarUtil mockLunarUtil = mock(LunarUtil.class);
+        when(mockLunarUtil.getLunarDateInfo(anyInt(),anyInt(),anyInt()))
+                .thenReturn(lunarInfoMock);
+        //        打桩
+        nextDate.setLunarUtil(mockLunarUtil);
+        JsonNode temp=testData_getNextDataInfoTest.get(index);
+        //ArrayList<String> list=new ObjectMapper().readValue(temp.get("out").toString(),new TypeReference<ArrayList<String>>(){});
+
+        assertEquals(new ObjectMapper().readValue(temp.get("out").toString(),new TypeReference<List<String>>(){}),
+                nextDate.getNextDateInfo(temp.get("in").get(0).asInt(),temp.get("in").get(1).asInt(),temp.get("in").get(2).asInt(),temp.get("in").get(3).asInt()));
+
+    }
+    @Test public void GetNextDateInfoTest001() throws Exception { VerifyGetNextDateIinfo("001"); }
+
+    @Test public void GetNextDateInfoTest002() throws Exception { VerifyGetNextDateIinfo("002"); }
+
+    @Test public void GetNextDateInfoTest003() throws Exception { VerifyGetNextDateIinfo("003"); }
 
 }

@@ -81,6 +81,7 @@ public class NextDate
                 result.add(unknownErrorMsg);
                 break;
         }
+        //System.out.println(result.toString());
         return result;
     }
 
@@ -108,7 +109,7 @@ public class NextDate
         int yearNext = year;
         int monthNext = month;
         int dayNext = day + 1;
-        int week = weekBase;
+        //int week = weekBase;
         int total = 0;          // 与1900-1-1的时间差,用于计算农历
 
         // 计算下一天的公历日期
@@ -123,36 +124,36 @@ public class NextDate
             }
         }
 
-        // 计算下一天星期
-        for (int y = yearBase; y < yearNext; y++)
-        {
-            if (isLeapYear(y))
-            {
-                week = (week + addInLeapYear) % 7;
-                total += 366;
-            } else
-            {
-                week = (week + addInNormalYear) % 7;
-                total += 365;
-            }
-        }
-        for (int m = 1; m < monthNext; m++)
-        {
-            week = (week + calendarMonth[isLeapYear][m - 1]) % 7;
-            total += calendarMonth[isLeapYear][m - 1];
-        }
-        week = (week + dayNext - 1) % 7;
-        total += dayNext - 1;
+//        // 计算下一天星期
+//        for (int y = yearBase; y < yearNext; y++)
+//        {
+//            if (isLeapYear(y))
+//            {
+//                week = (week + addInLeapYear) % 7;
+//                total += 366;
+//            } else
+//            {
+//                week = (week + addInNormalYear) % 7;
+//                total += 365;
+//            }
+//        }
+//        for (int m = 1; m < monthNext; m++)
+//        {
+//            week = (week + calendarMonth[isLeapYear][m - 1]) % 7;
+//            total += calendarMonth[isLeapYear][m - 1];
+//        }
+//        week = (week + dayNext - 1) % 7;
+//        total += dayNext - 1;
 
         // 根据公历日期获取农历日期
-        String[] lunarDateInfo = lunarUtil.getLunarDateInfo(yearNext, monthNext, dayNext, total);
+        String[] lunarDateInfo = lunarUtil.getLunarDateInfo(yearNext, monthNext, dayNext);
 
         // 更新后一天信息字符串数组
         info = new String[]{
                 yearNext + "",
                 monthNext + "",
                 dayNext + "",
-                week + "",
+               // week + "",
                 lunarDateInfo[0],
                 lunarDateInfo[1],
                 lunarDateInfo[2],

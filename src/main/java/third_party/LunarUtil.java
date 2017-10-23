@@ -3,6 +3,9 @@
  */
 package third_party;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * create by __yore
  * 公历转农历工具类(1900~2100)
@@ -66,6 +69,14 @@ public class LunarUtil
     private static final String strMonth = "月";
     private static final String strLeap = "闰";
 
+    private static int differentDaysByMillisecond(Date date2)
+    {
+        Calendar calendar= Calendar.getInstance();
+        calendar.set(1900,1,1);
+
+        int days = (int) ((date2.getTime() - calendar.getTime().getTime()) / (1000*3600*24));
+        return days;
+    }
 
     /**
      * 公历转农历主函数
@@ -76,11 +87,12 @@ public class LunarUtil
      * @param total 这一天距1900-1-1的天数
      * @return 农历信息表字符串数组数组
      */
-    public String[] getLunarDateInfo(int year, int month, int day, int total)
+    public String[] getLunarDateInfo(int year, int month, int day)
     {
+        //System.out.println("getLunarDateInfo - year: "+year+"; month: "+month+"; day: "+day+"; total: "+total);
         // 越界直接返回
         if (year > yearUpper || year < yearBase) return new String[]{"", "", "", ""};
-
+        int total=differentDaysByMillisecond(new Date(year-yearBase,month-1,day));
         // 正常算法
         // 1900年为庚子年
         int ganIndex = 6;   // 天干
