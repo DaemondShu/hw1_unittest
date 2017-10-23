@@ -1,10 +1,15 @@
 package third_party;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.PortableServer.POAPackage.ObjectAlreadyActiveHelper;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,11 +44,13 @@ public class LunarUtilTest {
 
 
     private static JsonNode testData_GetDayNumTest;
-
+    private static JsonNode testData_GetLunarDateInfoTest;
     @BeforeClass
     public static void InitTestData()
     {
-         testData_GetDayNumTest = IniTestData_GetDayNumTest();
+        testData_GetDayNumTest = IniTestData_GetDayNumTest();
+        testData_GetLunarDateInfoTest=IniTestData_GetLunarDateInfoTest();
+
     }
 
     private static ObjectNode newObjectNode()
@@ -51,7 +58,10 @@ public class LunarUtilTest {
         return new ObjectMapper().createObjectNode();
     }
 
-
+    private static ArrayNode newArrayNode()
+    {
+        return new ObjectMapper().createArrayNode();
+    }
     private static JsonNode IniTestData_GetDayNumTest()
     {
         ObjectNode testDataSet = new ObjectMapper().createObjectNode();
@@ -73,16 +83,59 @@ public class LunarUtilTest {
         return testDataSet;
 
     }
+    private static ObjectNode ConstructTestData(ObjectNode data, String index, ArrayNode out, ArrayNode in)
+    {
+        ObjectNode temp=newObjectNode();
+        temp.set("out",out);
+        temp.set("in",in);
+        data.set(index,temp);
+        return data;
+    }
+    private static JsonNode IniTestData_GetLunarDateInfoTest()
+    {
+        ObjectNode testdata=newObjectNode();
+        //年份小于应用范围
+        testdata=ConstructTestData(testdata,"001",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(1800).add(1).add(1));
+        //年份大于应用范围
+        testdata=ConstructTestData(testdata,"002",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(2200).add(1).add(1));
+
+        //月份不合法，期望输出["","","",""]，但是输出["庚子年","闰八月小","廿六","鼠"]
+        testdata=ConstructTestData(testdata,"003",
+                newArrayNode().add("庚子年").add("正月小").add("二十").add("鼠"),
+                newArrayNode().add(1901).add(-2).add(20));
+
+        //日期不合法，期望输出["","","",""]，但是输出["庚辰年","六月小","廿九","龙"]
+        testdata=ConstructTestData(testdata,"004",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(2000).add(6).add(60));
+
+        //正常情况
+        testdata=ConstructTestData(testdata,"005",
+                newArrayNode().add("庚子年").add("正月小").add("二十").add("鼠"),
+                newArrayNode().add(1900).add(2).add(20));
+        return testdata;
+    }
 
     /**
      * common test method for GetDayNum
      */
     private void VerifyGetDayNumTest(String Item) throws Exception
     {
-        JsonNode temp = testData_GetDayNumTest.get(Item).get("");
+        JsonNode temp = testData_GetDayNumTest.get(Item);
         assertEquals(temp.get("out").asInt(), LunarUtil.getDayNum(temp.get("in").asInt()));
     }
-
+    private void VerifyGetLunarDateInfoTest(String index) throws Exception
+    {
+        LunarUtil lunarUtil=new LunarUtil();
+        JsonNode temp=testData_GetLunarDateInfoTest.get(index);
+        assertEquals(new ObjectMapper().readValue(temp.get("out").toString(),new TypeReference<String[]>(){}),
+                lunarUtil.getLunarDateInfo(
+                temp.get("in").get(0).asInt(),temp.get("in").get(1).asInt(),temp.get("in").get(2).asInt()));
+    }
 //    /**
 //     * 没有闰月，7个29天的月份，5个30天的月份
 //     * 7*29+5*30=353
@@ -182,6 +235,16 @@ public class LunarUtilTest {
     @Test public void getDayNumTest006() throws Exception { VerifyGetDayNumTest("006"); }
 
     @Test public void getDayNumTest007() throws Exception { VerifyGetDayNumTest("007"); }
+
+    @Test public void getLunarDateInfoTest001() throws Exception { VerifyGetLunarDateInfoTest("001"); }
+
+    @Test public void getLunarDateInfoTest002() throws Exception { VerifyGetLunarDateInfoTest("002"); }
+
+    @Test public void getLunarDateInfoTest003() throws Exception { VerifyGetLunarDateInfoTest("003"); }
+
+    @Test public void getLunarDateInfoTest004() throws Exception { VerifyGetLunarDateInfoTest("004"); }
+
+    @Test public void getLunarDateInfoTest005() throws Exception { VerifyGetLunarDateInfoTest("005"); }
 
 
 

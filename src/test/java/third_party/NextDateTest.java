@@ -299,7 +299,7 @@ public class NextDateTest
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2001).add(1).add(6).add(-10));
 
-        //2001年1月5日，计算4天前，_getBackNDateInfo中day=0,month=0
+        //2001年1月5日，计算4天前，_getBackNDateInfo中day=0,month=0（等价类好像不需要这个测试用例，路径覆盖）
         testdata=ConstructTestData(testdata,"005",
                 newArrayNode().add(NextDate.SUCCESS).add(2001).add(1).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),

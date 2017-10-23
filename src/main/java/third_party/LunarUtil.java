@@ -71,10 +71,9 @@ public class LunarUtil
 
     private static int differentDaysByMillisecond(Date date2)
     {
-        Calendar calendar= Calendar.getInstance();
-        calendar.set(1900,1,1);
+        Date date1=new Date(0,0,1);
 
-        int days = (int) ((date2.getTime() - calendar.getTime().getTime()) / (1000*3600*24));
+        int days = (int) ((date2.getTime() - date1.getTime()) / (1000*3600*24));
         return days;
     }
 
@@ -171,6 +170,11 @@ public class LunarUtil
                 strDay,
                 chineseZodiac[zhiIndex]
         };
+//        for (String s:info
+//             ) {
+//            System.out.println(s);
+//        }
+
         return info;
     }
 
