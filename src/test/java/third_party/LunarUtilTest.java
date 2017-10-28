@@ -45,12 +45,12 @@ public class LunarUtilTest {
 
     private static JsonNode testData_GetDayNumTest;
     private static JsonNode testData_GetLunarDateInfoTest;
+
     @BeforeClass
     public static void InitTestData()
     {
         testData_GetDayNumTest = IniTestData_GetDayNumTest();
         testData_GetLunarDateInfoTest=IniTestData_GetLunarDateInfoTest();
-
     }
 
     private static ObjectNode newObjectNode()
@@ -62,7 +62,7 @@ public class LunarUtilTest {
     {
         return new ObjectMapper().createArrayNode();
     }
-    private static JsonNode IniTestData_GetDayNumTest()
+    public static JsonNode IniTestData_GetDayNumTest()
     {
         ObjectNode testDataSet = new ObjectMapper().createObjectNode();
         testDataSet.set("001",   //没有闰月，7个29天的月份，5个30天的月份 7*29+5*30=353
@@ -91,7 +91,7 @@ public class LunarUtilTest {
         data.set(index,temp);
         return data;
     }
-    private static JsonNode IniTestData_GetLunarDateInfoTest()
+    public static JsonNode IniTestData_GetLunarDateInfoTest()
     {
         ObjectNode testdata=newObjectNode();
         //年份小于应用范围
@@ -238,6 +238,7 @@ public class LunarUtilTest {
 //        assertEquals(-1,daynum);
 //    }
 
+    //------------------------------- 等价类测试 ------------------------------------------------
     @Test public void getDayNumTest001() throws Exception { VerifyGetDayNumTest("001"); }
 
     @Test public void getDayNumTest002() throws Exception { VerifyGetDayNumTest("002"); }
