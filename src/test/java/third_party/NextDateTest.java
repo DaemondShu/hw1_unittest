@@ -397,18 +397,31 @@ public class NextDateTest
 
 
 
-    /*@Test public void GetNextDateInfoTest001() throws Exception { VerifyGetNextDateInfo("001"); }
+    @Test public void GetNextDateInfoTest001() throws Exception { VerifyGetNextDateInfo("001"); }
 
     @Test public void GetNextDateInfoTest002() throws Exception { VerifyGetNextDateInfo("002"); }
 
     @Test public void GetNextDateInfoTest003() throws Exception { VerifyGetNextDateInfo("003"); }
+
     @Test public void GetNextDateInfoTest004() throws Exception { VerifyGetNextDateInfo("004"); }
 
     @Test public void GetNextDateInfoTest005() throws Exception { VerifyGetNextDateInfo("005"); }
 
     @Test public void GetNextDateInfoTest006() throws Exception { VerifyGetNextDateInfo("006"); }
 
-    @Test public void GetNextDateInfoTest007() throws Exception { VerifyGetNextDateInfo("007"); }*/
+    @Test public void GetNextDateInfoTest007() throws Exception { VerifyGetNextDateInfo("007"); }
+
+    @Test public void GetNextDateInfoTest008() throws Exception { VerifyGetNextDateInfo("008"); }
+
+    @Test public void GetNextDateInfoTest009() throws Exception { VerifyGetNextDateInfo("009"); }
+
+    @Test public void GetNextDateInfoTest010() throws Exception { VerifyGetNextDateInfo("010"); }
+
+    @Test public void GetNextDateInfoTest011() throws Exception { VerifyGetNextDateInfo("011"); }
+
+    @Test public void GetNextDateInfoTest012() throws Exception { VerifyGetNextDateInfo("012"); }
+
+    @Test public void GetNextDateInfoTest013() throws Exception { VerifyGetNextDateInfo("013"); }
 
     @Test public void GetNextDateInfoBoundaryTest001() throws  Exception{VerifyGetNextDateInfoBoundaryTest("001");}
     @Test public void GetNextDateInfoBoundaryTest002() throws  Exception{VerifyGetNextDateInfoBoundaryTest("002");}
@@ -422,17 +435,7 @@ public class NextDateTest
     @Test public void GetNextDateInfoBoundaryTest009() throws  Exception{VerifyGetNextDateInfoBoundaryTest("009");}
     @Test public void GetNextDateInfoBoundaryTest010() throws  Exception{VerifyGetNextDateInfoBoundaryTest("010");}
 
-    @Test public void GetNextDateInfoTest008() throws Exception { VerifyGetNextDateInfo("008"); }
 
-    @Test public void GetNextDateInfoTest009() throws Exception { VerifyGetNextDateInfo("009"); }
-
-    @Test public void GetNextDateInfoTest010() throws Exception { VerifyGetNextDateInfo("010"); }
-
-    @Test public void GetNextDateInfoTest011() throws Exception { VerifyGetNextDateInfo("011"); }
-
-    @Test public void GetNextDateInfoTest012() throws Exception { VerifyGetNextDateInfo("012"); }
-
-    @Test public void GetNextDateInfoTest013() throws Exception { VerifyGetNextDateInfo("013"); }
 
 
 }
