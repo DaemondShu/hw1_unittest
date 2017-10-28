@@ -76,10 +76,7 @@ public class NextDate
                     result.add(s);
                 }
                 break;
-            default:
-                result.add(FAIL);
-                result.add(unknownErrorMsg);
-                break;
+
         }
         //System.out.println(result.toString());
         return result;
@@ -119,6 +116,7 @@ public class NextDate
             monthNext++;
             if (monthNext > 12)
             {
+                System.out.println("monNext: "+monthNext);
                 monthNext = 1;
                 yearNext++;
             }

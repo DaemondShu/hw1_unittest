@@ -105,7 +105,7 @@ public class LunarUtilTest {
 
         //月份不合法，期望输出["","","",""]，但是输出["庚子年","闰八月小","廿六","鼠"]
         testdata=ConstructTestData(testdata,"003",
-                newArrayNode().add("庚子年").add("正月小").add("二十").add("鼠"),
+                newArrayNode().add("").add("").add("").add(""),
                 newArrayNode().add(1901).add(-2).add(20));
 
         //日期不合法，期望输出["","","",""]，但是输出["庚辰年","六月小","廿九","龙"]
@@ -113,10 +113,26 @@ public class LunarUtilTest {
                 newArrayNode().add("").add("").add("").add(""),
                 newArrayNode().add(2000).add(6).add(60));
 
-        //正常情况
+        //正常情况:total<30
         testdata=ConstructTestData(testdata,"005",
-                newArrayNode().add("庚子年").add("正月小").add("二十").add("鼠"),
-                newArrayNode().add(1900).add(2).add(20));
+                newArrayNode().add("己亥年").add("腊月大").add("十九").add("猪"),
+                newArrayNode().add(1900).add(1).add(20));
+
+        //正常情况:total>30,total < daysInYear
+        testdata=ConstructTestData(testdata,"006",
+                newArrayNode().add("庚子年").add("闰八月小").add("廿六").add("鼠"),
+                newArrayNode().add(1900).add(10).add(20));
+
+        //正常情况:total>30,total > daysInYear,total> monthDays,quotient=0
+        testdata=ConstructTestData(testdata,"007",
+                newArrayNode().add("庚辰年").add("四月小").add("初七").add("龙"),
+                newArrayNode().add(2000).add(5).add(10));
+
+        //正常情况:total>30,total < daysInYear,remainder=9
+        testdata=ConstructTestData(testdata,"008",
+                newArrayNode().add("戊辰年").add("九月小").add("二十").add("龙"),
+                newArrayNode().add(1988).add(10).add(30));
+
         return testdata;
     }
 
@@ -246,6 +262,11 @@ public class LunarUtilTest {
 
     @Test public void getLunarDateInfoTest005() throws Exception { VerifyGetLunarDateInfoTest("005"); }
 
+    @Test public void getLunarDateInfoTest006() throws Exception { VerifyGetLunarDateInfoTest("006"); }
+
+    @Test public void getLunarDateInfoTest007() throws Exception { VerifyGetLunarDateInfoTest("007"); }
+
+    @Test public void getLunarDateInfoTest008() throws Exception { VerifyGetLunarDateInfoTest("008"); }
 
 
 

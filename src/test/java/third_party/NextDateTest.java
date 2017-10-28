@@ -299,23 +299,60 @@ public class NextDateTest
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2001).add(1).add(6).add(-10));
 
-        //2001年1月5日，计算4天前，_getBackNDateInfo中day=0,month=0（等价类好像不需要这个测试用例，路径覆盖）
+        //计算前几天：2000年8月6日，计算10天前,_getBackNDateInfo中day<0,month！=0
         testdata=ConstructTestData(testdata,"005",
+                newArrayNode().add(NextDate.SUCCESS).add(2000).add(7).add(27)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2000).add(8).add(6).add(-10));
+
+        //计算前几天：2001年1月5日，计算4天前，_getBackNDateInfo中day=0,month=0
+        testdata=ConstructTestData(testdata,"006",
                 newArrayNode().add(NextDate.SUCCESS).add(2001).add(1).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2001).add(1).add(5).add(-4));
 
-        //计算后一天：2007年12月31日，n=1
-        testdata=ConstructTestData(testdata,"006",
+        //计算前几天：2001年8月5日，计算4天前，_getBackNDateInfo中day=0,month！=0
+        testdata=ConstructTestData(testdata,"007",
+                newArrayNode().add(NextDate.SUCCESS).add(2001).add(8).add(1)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2001).add(8).add(5).add(-4));
+
+        //计算后一天：2007年12月31日，n=1，dayNext>,monthNext>
+        testdata=ConstructTestData(testdata,"008",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(1).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2007).add(12).add(31).add(1));
 
-        //计算后几天：2007年12月1日，n=32
-        testdata=ConstructTestData(testdata,"007",
+        //计算后一天：2008年4月5日，n=1，dayNext<,monthNext<
+        testdata=ConstructTestData(testdata,"009",
+                newArrayNode().add(NextDate.SUCCESS).add(2008).add(4).add(6)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2008).add(4).add(5).add(1));
+
+        //计算后一天：2008年5月31日，n=1，dayNext<,monthNext<
+        testdata=ConstructTestData(testdata,"010",
+                newArrayNode().add(NextDate.SUCCESS).add(2008).add(6).add(1)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2008).add(5).add(31).add(1));
+
+        //计算后几天：2007年12月1日，n=32，day超过当月
+        testdata=ConstructTestData(testdata,"011",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(1).add(2)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2007).add(12).add(1).add(32));
+
+        //计算后几天：2008年5月1日，n=3,day不超过当月日期
+        testdata=ConstructTestData(testdata,"012",
+                newArrayNode().add(NextDate.SUCCESS).add(2008).add(5).add(4)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2008).add(5).add(1).add(3));
+
+        //计算后几天：2008年3月10日，n=30,day超过当月日期但month不等于13
+        testdata=ConstructTestData(testdata,"013",
+                newArrayNode().add(NextDate.SUCCESS).add(2008).add(4).add(9)
+                        .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
+                newArrayNode().add(2008).add(3).add(10).add(30));
+
         return testdata;
     }
     private void VerifyGetNextDateInfo(String index) throws Exception
@@ -339,7 +376,6 @@ public class NextDateTest
     @Test public void GetNextDateInfoTest002() throws Exception { VerifyGetNextDateInfo("002"); }
 
     @Test public void GetNextDateInfoTest003() throws Exception { VerifyGetNextDateInfo("003"); }
-
     @Test public void GetNextDateInfoTest004() throws Exception { VerifyGetNextDateInfo("004"); }
 
     @Test public void GetNextDateInfoTest005() throws Exception { VerifyGetNextDateInfo("005"); }
@@ -347,6 +383,18 @@ public class NextDateTest
     @Test public void GetNextDateInfoTest006() throws Exception { VerifyGetNextDateInfo("006"); }
 
     @Test public void GetNextDateInfoTest007() throws Exception { VerifyGetNextDateInfo("007"); }
+
+    @Test public void GetNextDateInfoTest008() throws Exception { VerifyGetNextDateInfo("008"); }
+
+    @Test public void GetNextDateInfoTest009() throws Exception { VerifyGetNextDateInfo("009"); }
+
+    @Test public void GetNextDateInfoTest010() throws Exception { VerifyGetNextDateInfo("010"); }
+
+    @Test public void GetNextDateInfoTest011() throws Exception { VerifyGetNextDateInfo("011"); }
+
+    @Test public void GetNextDateInfoTest012() throws Exception { VerifyGetNextDateInfo("012"); }
+
+    @Test public void GetNextDateInfoTest013() throws Exception { VerifyGetNextDateInfo("013"); }
 
 
 }

@@ -87,7 +87,7 @@ public class LunarUtil
      */
     public String[] getLunarDateInfo(int year, int month, int day)
     {
-        //System.out.println("getLunarDateInfo - year: "+year+"; month: "+month+"; day: "+day+"; total: "+total);
+
         // 越界直接返回
         if (year > yearUpper || year < yearBase) return new String[]{"", "", "", ""};
         int total=differentDaysByMillisecond(new Date(year-yearBase,month-1,day));
@@ -99,7 +99,6 @@ public class LunarUtil
         int sizeIndex = 0;  // 月份大小
         boolean isLeapMonth = false;
         String strDay;  // 农历日
-
         // 1900年1月特殊处理
         if (total < 30)
         {
@@ -149,6 +148,7 @@ public class LunarUtil
         // 处理农历日
         int remainder = total % 10; // 余数
         int quotient = total / 10;  // 商
+        System.out.println("total:"+total+";余数："+remainder+";商："+quotient);
         if (quotient == 0 || quotient == 3)
         {
             strDay = dayPre[0] + dayLater[remainder];
@@ -170,10 +170,10 @@ public class LunarUtil
                 strDay,
                 chineseZodiac[zhiIndex]
         };
-//        for (String s:info
-//             ) {
-//            System.out.println(s);
-//        }
+        for (String s:info
+             ) {
+            System.out.println(s);
+        }
 
         return info;
     }
