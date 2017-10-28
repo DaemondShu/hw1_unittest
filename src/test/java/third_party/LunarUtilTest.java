@@ -253,7 +253,7 @@ public class LunarUtilTest {
     }
 
 
-  /*  @Test public void getDayNumTest001() throws Exception { VerifyGetDayNumTest("001"); }
+    @Test public void getDayNumTest001() throws Exception { VerifyGetDayNumTest("001"); }
 
     @Test public void getDayNumTest002() throws Exception { VerifyGetDayNumTest("002"); }
 
@@ -275,7 +275,7 @@ public class LunarUtilTest {
 
     @Test public void getLunarDateInfoTest004() throws Exception { VerifyGetLunarDateInfoTest("004"); }
 
-    @Test public void getLunarDateInfoTest005() throws Exception { VerifyGetLunarDateInfoTest("005"); }*/
+    @Test public void getLunarDateInfoTest005() throws Exception { VerifyGetLunarDateInfoTest("005"); }
 
 
     @Test public void getDayNumBoundaryTest001() throws Exception{VerifyGetDayNumBoundaryTest("001");}

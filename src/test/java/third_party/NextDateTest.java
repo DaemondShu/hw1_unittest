@@ -185,7 +185,7 @@ public class NextDateTest
     }
 
 
-   /* @Test public void validDateTest001() throws Exception { VerifyValidDateTest("001"); }
+    @Test public void validDateTest001() throws Exception { VerifyValidDateTest("001"); }
 
     @Test public void validDateTest002() throws Exception { VerifyValidDateTest("002"); }
 
@@ -203,7 +203,7 @@ public class NextDateTest
 
     @Test public void validDateTest009() throws Exception { VerifyValidDateTest("009"); }
 
-    @Test public void validDateTest010() throws Exception { VerifyValidDateTest("010"); }*/
+    @Test public void validDateTest010() throws Exception { VerifyValidDateTest("010"); }
 
 
     @Test public void ValidDateBoundaryTest001() throws  Exception{VerifyValidDateBoundaryTest("001");}
