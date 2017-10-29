@@ -106,7 +106,7 @@ public class NextDateTest
         testDataSet.set("001",
                 newObjectNode().put("out",101).set("in",newArrayNode().add(1899).add(4).add(14)));
         testDataSet.set("002",
-                newObjectNode().put("out",100).set("in",newArrayNode().add(1900).add(4).add(0)));
+                newObjectNode().put("out",102).set("in",newArrayNode().add(1900).add(4).add(0)));
         testDataSet.set("003",
                 newObjectNode().put("out",100).set("in",newArrayNode().add(1901).add(4).add(1)));
         testDataSet.set("004",
@@ -138,8 +138,6 @@ public class NextDateTest
         testDataSet.set("015",
                 newObjectNode().put("out",100).set("in",newArrayNode().add(1994).add(4).add(2)));
 
-        testDataSet.set("016",
-                newObjectNode().put("out",100).set("in",newArrayNode().add(1994).add(4).add(28)));
 
         testDataSet.set("016",
                 newObjectNode().put("out",100).set("in",newArrayNode().add(1994).add(4).add(29)));
