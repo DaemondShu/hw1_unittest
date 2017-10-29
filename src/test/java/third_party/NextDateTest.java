@@ -106,7 +106,7 @@ public class NextDateTest
         testDataSet.set("001",
                 newObjectNode().put("out",101).set("in",newArrayNode().add(1899).add(4).add(14)));
         testDataSet.set("002",
-                newObjectNode().put("out",100).set("in",newArrayNode().add(1900).add(4).add(0)));
+                newObjectNode().put("out",102).set("in",newArrayNode().add(1900).add(4).add(0)));
         testDataSet.set("003",
                 newObjectNode().put("out",100).set("in",newArrayNode().add(1901).add(4).add(1)));
         testDataSet.set("004",
@@ -138,8 +138,6 @@ public class NextDateTest
         testDataSet.set("015",
                 newObjectNode().put("out",100).set("in",newArrayNode().add(1994).add(4).add(2)));
 
-        testDataSet.set("016",
-                newObjectNode().put("out",100).set("in",newArrayNode().add(1994).add(4).add(28)));
 
         testDataSet.set("016",
                 newObjectNode().put("out",100).set("in",newArrayNode().add(1994).add(4).add(29)));
@@ -392,7 +390,7 @@ public class NextDateTest
                 newArrayNode().add(NextDate.FAIL).add("nextdate的日期超出范围"),
                 newArrayNode().add(1900).add(1).add(1).add(Integer.MAX_VALUE));
         testDataSet=ConstructTestData(testDataSet,"006",
-                newArrayNode().add(NextDate.NO_LUNAR_INFO).add("nextdate的日期超出范围"),
+                newArrayNode().add(NextDate.FAIL).add("nextdate的日期超出范围"),
                 newArrayNode().add(2100).add(12).add(31).add(Integer.MIN_VALUE));
         testDataSet=ConstructTestData(testDataSet,"007",
                 newArrayNode().add(NextDate.NO_LUNAR_INFO).add(2100).add(12).add(30)
@@ -403,10 +401,10 @@ public class NextDateTest
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2100).add(12).add(31).add(0));
         testDataSet=ConstructTestData(testDataSet,"009",
-                newArrayNode().add(NextDate.NO_LUNAR_INFO).add("nextdate的日期超出范围"),
+                newArrayNode().add(NextDate.FAIL).add("nextdate的日期超出范围"),
                 newArrayNode().add(2100).add(12).add(31).add(1));
         testDataSet=ConstructTestData(testDataSet,"010",
-                newArrayNode().add(NextDate.NO_LUNAR_INFO).add("nextdate的日期超出范围"),
+                newArrayNode().add(NextDate.FAIL).add("nextdate的日期超出范围"),
                 newArrayNode().add(2100).add(12).add(31).add(Integer.MAX_VALUE));
 
         return testDataSet;
@@ -432,7 +430,16 @@ public class NextDateTest
 
     private void VerifyGetNextDateInfoBoundaryTest(String index) throws Exception
     {
-        VerifyGetNextDateInfo(index);
+        NextDate nextDate=new NextDate();
+        //造木桩 模拟对象以及对象返回值
+        LunarUtil mockLunarUtil = mock(LunarUtil.class);
+        when(mockLunarUtil.getLunarDateInfo(anyInt(),anyInt(),anyInt())).thenReturn(lunarInfoMock);
+        // 打桩
+        nextDate.setLunarUtil(mockLunarUtil);
+        JsonNode temp=testData_getNextDataInfoBoundaryTest.get(index);
+        //ArrayList<String> list=new ObjectMapper().readValue(temp.get("out").toString(),new TypeReference<ArrayList<String>>(){});
+        assertEquals(new ObjectMapper().readValue(temp.get("out").toString(),new TypeReference<List<String>>(){}),
+                nextDate.getNextDateInfo(temp.get("in").get(0).asInt(),temp.get("in").get(1).asInt(),temp.get("in").get(2).asInt(),temp.get("in").get(3).asInt()));
     }
 
 
