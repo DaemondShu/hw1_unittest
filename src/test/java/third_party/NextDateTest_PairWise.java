@@ -30,7 +30,7 @@ public class NextDateTest_PairWise
 
     static Iterator<JsonNode> ValidDataTestCasesProvider()
     {
-        JsonNode primaryTestEqCases = NextDateTest.IniTestData_validDataTest();
+        JsonNode primaryTestEqCases = NextDateTest.IniTestData_validDateTest();
         JsonNode primaryTestBoundaryCases = NextDateTest.IniTestData_validDataBoundaryTest();
 
 

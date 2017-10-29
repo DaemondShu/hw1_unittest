@@ -142,33 +142,70 @@ public class LunarUtilTest {
                 newArrayNode().add("").add("").add("").add(""),
                 newArrayNode().add(2200).add(1).add(1));
 
-        //月份不合法，期望输出["","","",""]，但是输出["庚子年","闰八月小","廿六","鼠"]
+        //月份不合法，小于1，期望输出["","","",""]，但是输出["庚子年","闰八月小","廿六","鼠"]
         testdata=ConstructTestData(testdata,"003",
                 newArrayNode().add("").add("").add("").add(""),
                 newArrayNode().add(1901).add(-2).add(20));
 
-        //日期不合法，期望输出["","","",""]，但是输出["庚辰年","六月小","廿九","龙"]
+        //月份不合法，大于12，期望输出["","","",""]，但是输出["辛丑年","腊月小","初一","牛"]
         testdata=ConstructTestData(testdata,"004",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(1901).add(13).add(10));
+
+        //日期不合法，小月>31，期望输出["","","",""]，但是输出["庚辰年","六月小","廿九","龙"]
+        testdata=ConstructTestData(testdata,"005",
                 newArrayNode().add("").add("").add("").add(""),
                 newArrayNode().add(2000).add(6).add(60));
 
-        //正常情况:total<30
-        testdata=ConstructTestData(testdata,"005",
+        //日期不合法，日期小于1，期望输出["","","",""]，但是输出["庚辰年","五月大","廿八","龙"]
+        testdata=ConstructTestData(testdata,"006",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(2000).add(7).add(-1));
+
+        //日期不合法，闰年2月>29,期望输出["","","",""]，但是输出["庚辰年","正月大","廿六","龙"]
+
+        testdata=ConstructTestData(testdata,"007",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(2000).add(2).add(30));
+
+        //日期合法，闰年2月1-29，期望输出["庚辰年","正月大","十六","龙"]
+        testdata=ConstructTestData(testdata,"008",
+                newArrayNode().add("庚辰年").add("正月大").add("十六").add("龙"),
+                newArrayNode().add(2000).add(2).add(20));
+
+        //日期合法，平年2月1-28，期望输出["戊寅年","正月大","廿五","虎"]
+        testdata=ConstructTestData(testdata,"009",
+                newArrayNode().add("戊寅年").add("正月大").add("廿五").add("虎"),
+                newArrayNode().add(1999).add(2).add(10));
+
+        //日期不合法.平年2月>28，期望输出["","","",""]，但是输出["己卯年","正月大","十四","兔"]
+        testdata=ConstructTestData(testdata,"010",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(1999).add(2).add(29));
+
+        //日期不合法，大月>31，期望输出["","","",""]，但是输出["乙亥年","八月大","初七","猪"]
+        testdata=ConstructTestData(testdata,"011",
+                newArrayNode().add("").add("").add("").add(""),
+                newArrayNode().add(1995).add(8).add(32));
+
+        //正常情况:total<30,期望结果：["己亥年","腊月大","十九","猪"]
+        testdata=ConstructTestData(testdata,"012",
                 newArrayNode().add("己亥年").add("腊月大").add("十九").add("猪"),
                 newArrayNode().add(1900).add(1).add(20));
 
-        //正常情况:total>30,total < daysInYear
-        testdata=ConstructTestData(testdata,"006",
+        //正常情况:total>30,total < daysInYear,期望结果：["庚子年","闰八月小","廿六","鼠"]
+        testdata=ConstructTestData(testdata,"013",
                 newArrayNode().add("庚子年").add("闰八月小").add("廿六").add("鼠"),
                 newArrayNode().add(1900).add(10).add(20));
 
         //正常情况:total>30,total > daysInYear,total> monthDays,quotient=0
-        testdata=ConstructTestData(testdata,"007",
+        //期望结果：["庚辰年","四月小","初七","龙"]
+        testdata=ConstructTestData(testdata,"014",
                 newArrayNode().add("庚辰年").add("四月小").add("初七").add("龙"),
                 newArrayNode().add(2000).add(5).add(10));
 
-        //正常情况:total>30,total > daysInYear,remainder=9
-        testdata=ConstructTestData(testdata,"008",
+        //正常情况:total>30,total > daysInYear,remainder=9,期望结果：["戊辰年","九月小","二十","龙"]
+        testdata=ConstructTestData(testdata,"015",
                 newArrayNode().add("戊辰年").add("九月小").add("二十").add("龙"),
                 newArrayNode().add(1988).add(10).add(30));
 
@@ -408,6 +445,21 @@ public class LunarUtilTest {
     @Test public void getLunarDateInfoTest007() throws Exception { VerifyGetLunarDateInfoTest("007"); }
 
     @Test public void getLunarDateInfoTest008() throws Exception { VerifyGetLunarDateInfoTest("008"); }
+
+    @Test public void getLunarDateInfoTest009() throws Exception { VerifyGetLunarDateInfoTest("009"); }
+
+    @Test public void getLunarDateInfoTest010() throws Exception { VerifyGetLunarDateInfoTest("010"); }
+
+    @Test public void getLunarDateInfoTest011() throws Exception { VerifyGetLunarDateInfoTest("011"); }
+
+    @Test public void getLunarDateInfoTest012() throws Exception { VerifyGetLunarDateInfoTest("012"); }
+
+    @Test public void getLunarDateInfoTest013() throws Exception { VerifyGetLunarDateInfoTest("013"); }
+
+    @Test public void getLunarDateInfoTest014() throws Exception { VerifyGetLunarDateInfoTest("014"); }
+
+    @Test public void getLunarDateInfoTest015() throws Exception { VerifyGetLunarDateInfoTest("015"); }
+
 
     // ------------------------ 边界类 ------------------------------
 

@@ -31,7 +31,7 @@ public class NextDateTest
     @BeforeClass
     public static void InitTestData()
     {
-        testData_validDateTest = IniTestData_validDataTest();
+        testData_validDateTest = IniTestData_validDateTest();
         testData_getNextDataInfoTest=IniTestData_getNextDateInfoTest();
 
         testData_validDateBoundaryTest=IniTestData_validDataBoundaryTest();
@@ -47,7 +47,7 @@ public class NextDateTest
         return new ObjectMapper().createArrayNode();
     }
 
-    public static JsonNode IniTestData_validDataTest()
+    public static JsonNode IniTestData_validDateTest()
     {
 
         ObjectNode testDataSet = new ObjectMapper().createObjectNode();
@@ -56,7 +56,7 @@ public class NextDateTest
         testDataSet.set("001",
                 newObjectNode().put("out",101).set("in",newArrayNode().add(2101).add(1).add(1)));
 
-        //    年份不符合，小于可用范围， 期望返回错误码 errDateOutOfRange = 101
+        //年份不符合，小于可用范围， 期望返回错误码 errDateOutOfRange = 101
         testDataSet.set("002",
                 newObjectNode().put("out",101).set("in",newArrayNode().add(1800).add(1).add(1)));
 
@@ -258,73 +258,109 @@ public class NextDateTest
                 newArrayNode().add(NextDate.FAIL).add("输入的日期超出应用可用范围"),
                 newArrayNode().add(1800).add(1).add(1).add(1));
 
-        //2000年8月40日，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        //2200年1月1日，日期超出范围，期望返回fail以及错误信息：输入的日期超出应用可用范围1
         testdata=ConstructTestData(testdata,"002",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期超出应用可用范围"),
+                newArrayNode().add(2200).add(1).add(1).add(1));
+
+        //月份无效，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"003",
                 newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
-                newArrayNode().add(2000).add(8).add(40).add(1));
+                newArrayNode().add(2001).add(0).add(1).add(1));
+
+        //月份无效，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"004",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
+                newArrayNode().add(2001).add(13).add(1).add(1));
+
+        //2007年4月0日，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"005",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
+                newArrayNode().add(2007).add(4).add(0).add(1));
+
+        //1905年2月29日，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"006",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
+                newArrayNode().add(1905).add(2).add(29).add(1));
+
+        //小月>31，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"007",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
+                newArrayNode().add(2010).add(9).add(31).add(1));
+
+        //2011年8月32日，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"008",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
+                newArrayNode().add(2011).add(8).add(32).add(1));
+
+        //闰年2月>29，日期不存在，期望返回fail以及错误信息：输入的日期不存在
+        testdata=ConstructTestData(testdata,"009",
+                newArrayNode().add(NextDate.FAIL).add("输入的日期不存在"),
+                newArrayNode().add(1904).add(2).add(30).add(1));
+
 
         //2100年12月31日，nextdate超出范围，返回NO_LUNAR_INFO以及桩公历信息
-        testdata=ConstructTestData(testdata,"003",
+        testdata=ConstructTestData(testdata,"010",
                 newArrayNode().add(NextDate.NO_LUNAR_INFO).add(2101).add(1).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2100).add(12).add(31).add(1));
 
-        //计算前几天：2001年1月6日，计算10天前,_getBackNDateInfo中day<0,month=0
-        testdata=ConstructTestData(testdata,"004",
+        //n<0 计算前几天：2001年1月6日，计算10天前,_getBackNDateInfo中day<0,month=0
+        testdata=ConstructTestData(testdata,"011",
                 newArrayNode().add(NextDate.SUCCESS).add(2000).add(12).add(27)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2001).add(1).add(6).add(-10));
 
         //计算前几天：2000年8月6日，计算10天前,_getBackNDateInfo中day<0,month！=0
-        testdata=ConstructTestData(testdata,"005",
+        testdata=ConstructTestData(testdata,"012",
                 newArrayNode().add(NextDate.SUCCESS).add(2000).add(7).add(27)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2000).add(8).add(6).add(-10));
 
         //计算前几天：2001年1月5日，计算4天前，_getBackNDateInfo中day=0,month=0
-        testdata=ConstructTestData(testdata,"006",
+        testdata=ConstructTestData(testdata,"013",
                 newArrayNode().add(NextDate.SUCCESS).add(2001).add(1).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2001).add(1).add(5).add(-4));
 
         //计算前几天：2001年8月5日，计算4天前，_getBackNDateInfo中day=0,month！=0
-        testdata=ConstructTestData(testdata,"007",
+        testdata=ConstructTestData(testdata,"014",
                 newArrayNode().add(NextDate.SUCCESS).add(2001).add(8).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2001).add(8).add(5).add(-4));
 
-        //计算后一天：2007年12月31日，n=1，dayNext>,monthNext>
-        testdata=ConstructTestData(testdata,"008",
+        //n=1 计算后一天：2007年12月31日，n=1，dayNext>,monthNext>
+        testdata=ConstructTestData(testdata,"015",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(1).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2007).add(12).add(31).add(1));
 
         //计算后一天：2008年4月5日，n=1，dayNext<,monthNext<
-        testdata=ConstructTestData(testdata,"009",
+        testdata=ConstructTestData(testdata,"016",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(4).add(6)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2008).add(4).add(5).add(1));
 
         //计算后一天：2008年5月31日，n=1，dayNext<,monthNext<
-        testdata=ConstructTestData(testdata,"010",
+        testdata=ConstructTestData(testdata,"017",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(6).add(1)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2008).add(5).add(31).add(1));
 
-        //计算后几天：2007年12月1日，n=32，day超过当月
-        testdata=ConstructTestData(testdata,"011",
+        //n>1计算后几天：2007年12月1日，n=32，day超过当月
+        testdata=ConstructTestData(testdata,"018",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(1).add(2)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2007).add(12).add(1).add(32));
 
         //计算后几天：2008年5月1日，n=3,day不超过当月日期
-        testdata=ConstructTestData(testdata,"012",
+        testdata=ConstructTestData(testdata,"019",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(5).add(4)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2008).add(5).add(1).add(3));
 
         //计算后几天：2008年3月10日，n=30,day超过当月日期但month不等于13
-        testdata=ConstructTestData(testdata,"013",
+        testdata=ConstructTestData(testdata,"020",
                 newArrayNode().add(NextDate.SUCCESS).add(2008).add(4).add(9)
                         .add(lunarInfoMock[0]).add(lunarInfoMock[1]).add(lunarInfoMock[2]).add(lunarInfoMock[3]),
                 newArrayNode().add(2008).add(3).add(10).add(30));
@@ -426,6 +462,20 @@ public class NextDateTest
     @Test public void GetNextDateInfoTest012() throws Exception { VerifyGetNextDateInfo("012"); }
 
     @Test public void GetNextDateInfoTest013() throws Exception { VerifyGetNextDateInfo("013"); }
+
+    @Test public void GetNextDateInfoTest014() throws Exception { VerifyGetNextDateInfo("014"); }
+
+    @Test public void GetNextDateInfoTest015() throws Exception { VerifyGetNextDateInfo("015"); }
+
+    @Test public void GetNextDateInfoTest016() throws Exception { VerifyGetNextDateInfo("016"); }
+
+    @Test public void GetNextDateInfoTest017() throws Exception { VerifyGetNextDateInfo("017"); }
+
+    @Test public void GetNextDateInfoTest018() throws Exception { VerifyGetNextDateInfo("018"); }
+
+    @Test public void GetNextDateInfoTest019() throws Exception { VerifyGetNextDateInfo("019"); }
+
+    @Test public void GetNextDateInfoTest020() throws Exception { VerifyGetNextDateInfo("020"); }
 
     @Test public void GetNextDateInfoBoundaryTest001() throws  Exception{VerifyGetNextDateInfoBoundaryTest("001");}
     @Test public void GetNextDateInfoBoundaryTest002() throws  Exception{VerifyGetNextDateInfoBoundaryTest("002");}
